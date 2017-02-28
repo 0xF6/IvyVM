@@ -1,0 +1,27 @@
+{
+  "name": "market_fetcher",
+  "version": "0.0.1",
+  "description": "CSGO.TM fetcher",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HoloVector/MarketFetcher.git"
+  },
+  "author": "Yuuki Wesp",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/HoloVector/MarketFetcher/issues"
+  },
+  "homepage": "https://github.com/HoloVector/MarketFetcher#readme",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typedoc": "^2.0.2",
+    "gulp-typescript": "^3.1.5",
+    "typedoc": "^0.5.7",
+    "typescript": "^2.2.1",
+    "typescript-compiler": "^1.4.1-2"
+  }
+}

@@ -4,7 +4,10 @@
   "description": "CSGO.TM fetcher",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp build",
+    "start": "node --harmony main.js",
+    "version": "node -v && echo \"FlameVM 0.0.1\""
   },
   "repository": {
     "type": "git",
@@ -17,9 +20,11 @@
   },
   "homepage": "https://github.com/HoloVector/MarketFetcher#readme",
   "dependencies": {
+    "es-module-loader": "^2.1.2",
     "gulp": "^3.9.1",
     "gulp-typedoc": "^2.0.2",
     "gulp-typescript": "^3.1.5",
+    "moment": "^2.17.1",
     "typedoc": "^0.5.7",
     "typescript": "^2.2.1",
     "typescript-compiler": "^1.4.1-2"

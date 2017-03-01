@@ -43,7 +43,7 @@ class Assembler
     runVM()
     {
         let that = this;
-        exec('vm.exe', function(err, data)
+        exec('bin/flame.vm', function(err, data)
         {
             that.error(err);
             if(data)

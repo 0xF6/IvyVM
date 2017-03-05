@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using FlameVM.Core;
 using Noesis.Javascript;
 
 namespace FlameVM
@@ -12,25 +13,12 @@ namespace FlameVM
 
             Thread.Sleep(2000);
 
+            EngineVM VM = new EngineVM();
 
-            using (var context = new JavascriptContext())
-            {
-                // Some trivial typescript:
-                var typescriptSource = "window.alert('hello world!');";
-                context.SetParameter("typescriptSource", typescriptSource);
-                context.SetParameter("result", "");
-
-                // Build some js to execute:
-                string script = tscJs + @"
-result = TypeScript.compile(""typescriptSource"")";
-
-                // Execute the js
-                context.Run(script);
-
-                // Retrieve the result (which should be the compiled JS)
-                var js = context.GetParameter("result");
-            }
-
+            VM.SetEngine(libxFile.LoadFromFile("lib\\tsc.lib"));
+            VM.BindMain("main.ts");
+            VM.Start();
+            Console.Read();
             return 0; 
         }
     }

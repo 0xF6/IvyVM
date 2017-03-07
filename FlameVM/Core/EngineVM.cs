@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Jint;
 using Jint.Runtime;
+using Jint.Runtime.Interop;
 using Noesis.Javascript;
 using RC.Framework;
 
@@ -13,16 +14,36 @@ namespace FlameVM.Core
         private libxFile compilePacket;
         private string mainTS;
         private readonly Dictionary<string, object> contextDictionary = new Dictionary<string, object>();
-        private Engine jsEngine;
+        private readonly Engine jsEngine;
         private string compiledJS;
         public EngineVM()
         {
-            jsEngine = new Engine();
+            jsEngine = new Engine(cfg => cfg.AllowClr());
+
+
+
+
             BindContext<Action<string>>("VMLog", Log);
             BindContext<Action<string>>("VMWarn", Waring);
             BindContext<Action<string>>("VMError", Error);
-        }
 
+
+            jsEngine.Execute(@"
+            var Flame;
+            (function (Flame) {
+                var Engine = (function () 
+                {
+                    function Engine() {}
+                    Engine.Log = function (s) { VMLog(s); };
+                    Engine.Error = function (s) { VMError(s); };
+                    Engine.Warning = function (s) { VMWarning(s); };
+                    return Engine;
+                }());
+                Flame.Engine = Engine;
+            })(Flame || (Flame = {}));");
+
+            jsEngine.Execute("Flame.Engine.Log('VM Started')");
+        }
         public void BindContext<T>(string key, T obj)
         {
             if (contextDictionary.ContainsKey(key))
@@ -32,6 +53,7 @@ namespace FlameVM.Core
             }
             contextDictionary.Add(key, obj);
             jsEngine.SetValue(key, obj);
+            jsEngine.SetValue("Tools", TypeReference.CreateTypeReference(jsEngine, typeof(Tools)));
         }
 
         public void SetEngine(libxFile pack) { this.compilePacket = pack; }
@@ -48,24 +70,7 @@ namespace FlameVM.Core
         {
             jsEngine.SetValue("TCSResult", "");
             jsEngine.SetValue("TSSource", File.ReadAllText(mainTS));
-
-            using (var context = new JavascriptContext())
-            {
-                // Some trivial typescript:
-                var typescriptSource = "window.alert('hello world!');";
-                context.SetParameter("typescriptSource", typescriptSource);
-                context.SetParameter("result", "");
-
-                // Build some js to execute:
-                string script = File.ReadAllText("lib\\env.lib");
-
-                // Execute the js
-                context.Run(script);
-
-                // Retrieve the result (which should be the compiled JS)
-                var js = context.GetParameter("result");
-            }
-
+            
             using (var context = new JavascriptContext())
             {
                 try

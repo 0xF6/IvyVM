@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Jint.Runtime;
 using RC.Framework;
 
 namespace FlameVM.Core
@@ -52,6 +53,18 @@ namespace FlameVM.Core
             ex = typesEnum.Aggregate(ex, (current, s) => current.Replace(s, RCL.Wrap(s, ConsoleColor.DarkYellow)));
             ex = typesNameSpace.Aggregate(ex, (current, s) => current.Replace(s, RCL.Wrap(s, ConsoleColor.Gray)));
             return ex;
+        }
+
+        public static void Print(this JavaScriptException e)
+        {
+            Terminal.WriteLine($"+==============================================+");
+            Terminal.WriteLine($"+=|           {RCL.Wrap("JavaScript Exception", ConsoleColor.DarkRed)}");
+            Terminal.WriteLine($"+=| Column   :{e.Column}");
+            Terminal.WriteLine($"+=| Location :{e.Location}");
+            Terminal.WriteLine($"+=| Line     :{e.LineNumber}");
+            Terminal.WriteLine($"+=| Error    :{e.Error}");
+            Terminal.WriteLine($"+=| Exception:{e.Message}");
+            Terminal.WriteLine($"+==============================================+");
         }
     }
 }

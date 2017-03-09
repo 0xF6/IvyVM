@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+#pragma warning disable 1998
+using System.Threading.Tasks;
+using EdgeJs;
 using Jint;
 using Jint.Runtime;
 using Jint.Runtime.Interop;
@@ -22,6 +25,15 @@ namespace FlameVM.Core
 
 
 
+            Edge.Func(@"
+            return function(data, callback) 
+            {
+                exports.flameVM = {};
+                exports.flameVM.methods = [];
+                callback(null, null);
+            }  
+            ").Invoke(null).Wait();
+
 
             BindContext<Action<string>>("VMLog", Log);
             BindContext<Action<string>>("VMWarn", Waring);
@@ -41,8 +53,8 @@ namespace FlameVM.Core
                 }());
                 Flame.Engine = Engine;
             })(Flame || (Flame = {}));");
-
-            jsEngine.Execute("Flame.Engine.Log('VM Started')");
+            jsEngine.Execute("var exports = {}; exports.__esModule = false;");
+            jsEngine.Execute("Flame.Engine.Log('VM Started');");
         }
         public void BindContext<T>(string key, T obj)
         {
@@ -53,7 +65,28 @@ namespace FlameVM.Core
             }
             contextDictionary.Add(key, obj);
             jsEngine.SetValue(key, obj);
-            jsEngine.SetValue("Tools", TypeReference.CreateTypeReference(jsEngine, typeof(Tools)));
+
+            if (typeof(T) == typeof(Action<string>))
+            {
+                Action<string> s = (Action<string>)(object)obj;
+                s("test in engine");
+                this.BindDelegate<string>(s, key);
+            }
+        }
+
+        private void BindDelegate<T>(Action<T> a, string name)
+        {
+            var wrapFucn = (Func<object, Task<object>>)(async (s) =>
+            {
+                a((T)s);
+                return null;
+            });
+
+            Edge.Func($"return function(data, callback)" +
+           "{" +
+           $"    exports.flameVM.{name} = data;" +
+           $"    callback(null, null);" +
+           "}").Invoke(wrapFucn).Wait();
         }
 
         public void SetEngine(libxFile pack) { this.compilePacket = pack; }
@@ -68,30 +101,64 @@ namespace FlameVM.Core
         }
         public void Start()
         {
-            jsEngine.SetValue("TCSResult", "");
-            jsEngine.SetValue("TSSource", File.ReadAllText(mainTS));
-            
-            using (var context = new JavascriptContext())
+
+            var sq = (Func<object, Task<object>>)(async (i) => {
+                Terminal.WriteLine($"[{RCL.Wrap("Core", ConsoleColor.DarkMagenta)}]: result:{i}!");
+                return null;
+            });
+
+            var qwe0 = Edge.Func(@"
+            return function(data, callback) 
             {
-                try
-                {
-                    jsEngine.Execute(File.ReadAllText("lib\\env.lib"));
-                    jsEngine.Execute(compilePacket.ToString()); // TSCompile
-                    jsEngine.Execute("TCSResult = TypeScript.compile(TSSource, null, function(e) { VMError(e); });");
-                }
-                catch (JavaScriptException e)
-                {
-                    Terminal.WriteLine($"+==============================================+");
-                    Terminal.WriteLine($"+=|           {RCL.Wrap("JavaScript Exception", ConsoleColor.DarkRed)}");
-                    Terminal.WriteLine($"+=| Column   :{e.Column}");
-                    Terminal.WriteLine($"+=| Location :{e.Location}");
-                    Terminal.WriteLine($"+=| Line     :{e.LineNumber}");
-                    Terminal.WriteLine($"+=| Error    :{e.Error}");
-                    Terminal.WriteLine($"+=| Exception:{e.Message}");
-                    Terminal.WriteLine($"+==============================================+");
-                }
-                compiledJS = jsEngine.GetValue("TCSResult").AsString();
+                exports.flameVM.VMLog('sqe0 execute!');
+                exports.nure = 1;
+
+                data(exports.nure++, true);
+                callback(null, null);
+            }  
+            ");
+            var qwe1 = Edge.Func(@"
+            return function(data, callback) 
+            {
+                exports.flameVM.VMLog('sqe1 execute!');
+                data(exports.nure++, true);
+                callback(null, null);
+            }  
+            ");
+
+            qwe0(sq).Wait();
+            qwe1(sq).Wait();
+            qwe1(sq).Wait();
+            qwe1(sq).Wait();
+            qwe1(sq).Wait();
+
+            var func = Edge.Func(@"
+            let ts = require('typescript');
+            let TCSResult = '';
+            let compilerOptions = { module: ts.ModuleKind.None, removeComments: true };
+
+
+            return function(data, callback) 
+            {
+                TCSResult = ts.transpile(data, compilerOptions, undefined, undefined,'FlameScript');
+                callback(null, TCSResult);
             }
+            ");
+            string tsc = (string)func(File.ReadAllText(mainTS)).Result;
+
+            
+
+
+            //try
+            //{
+            //    jsEngine.Execute(tsc);
+            //    jsEngine.Execute("YRes = Dummy.TestClass.testMethod2();");
+            //    //jsEngine.Execute("TCSResult = TypeScript.compile(TSSource, null, function(e) { VMError(e); });");
+            //}
+            //catch (JavaScriptException e)
+            //{
+            //    e.Print();
+            //}
         }
 
         public static void Log(string s)

@@ -8,6 +8,11 @@ namespace builder
 
     public class Program
     {
+        public static void Hews()
+        {
+            Console.WriteLine("RECIVED!");
+        }
+
         public static int Main(string[] args)
         {
             Console.Title = "builder";

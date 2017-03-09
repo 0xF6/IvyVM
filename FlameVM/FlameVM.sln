@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlameVM", "FlameVM.csproj",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "builder", "builder\builder.csproj", "{9C2F8447-352B-4B9D-9ACB-1994EF1B0EB0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VM", "VM", "{B3720C85-E8EB-4C97-8F28-CF0FB51C8DF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flame.API", "..\Flame.API\Flame.API.csproj", "{8B33FA7E-8A79-404B-9700-92ADC3DA6915}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +25,16 @@ Global
 		{9C2F8447-352B-4B9D-9ACB-1994EF1B0EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C2F8447-352B-4B9D-9ACB-1994EF1B0EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C2F8447-352B-4B9D-9ACB-1994EF1B0EB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B33FA7E-8A79-404B-9700-92ADC3DA6915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B33FA7E-8A79-404B-9700-92ADC3DA6915}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B33FA7E-8A79-404B-9700-92ADC3DA6915}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B33FA7E-8A79-404B-9700-92ADC3DA6915}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7157948E-2988-40BF-8090-812F371A3816} = {B3720C85-E8EB-4C97-8F28-CF0FB51C8DF3}
+		{8B33FA7E-8A79-404B-9700-92ADC3DA6915} = {B3720C85-E8EB-4C97-8F28-CF0FB51C8DF3}
 	EndGlobalSection
 EndGlobal

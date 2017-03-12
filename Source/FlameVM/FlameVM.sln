@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "builder", "builder\builder.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VM", "VM", "{B3720C85-E8EB-4C97-8F28-CF0FB51C8DF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flame.API", "..\Flame.API\Flame.API.csproj", "{8B33FA7E-8A79-404B-9700-92ADC3DA6915}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flame.API", "..\lib\Flame.API\Flame.API.csproj", "{8B33FA7E-8A79-404B-9700-92ADC3DA6915}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -98,12 +98,6 @@
   <ItemGroup>
     <Folder Include="Core\Wraps\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Flame.API\Flame.API.csproj">
-      <Project>{8b33fa7e-8a79-404b-9700-92adc3da6915}</Project>
-      <Name>Flame.API</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

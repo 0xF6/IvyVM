@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace FlameVM.Core
+namespace Flame.API.Core
 {
     public class libxFile
     {

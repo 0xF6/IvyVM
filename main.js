@@ -9,3 +9,9 @@ asm.Welcome();
 asm.runVM();
 
 
+let ts = require('typescript');
+let TCSResult = '';
+let compilerOptions = { module: ts.ModuleKind.None, removeComments: true };
+
+
+TCSResult = ts.transpile(data, compilerOptions, undefined, undefined,'FlameScript');

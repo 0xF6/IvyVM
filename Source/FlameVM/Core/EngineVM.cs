@@ -104,11 +104,11 @@ namespace FlameVM.Core
             if (typeof(T) == typeof(Action<byte>))    this.BindDelegate((Action<byte>)  (object)obj, key);
         }
 
-        private void BindDelegate<T>(Action<T> a, string name)
+        private void BindDelegate<T>(Action<T> action, string name)
         {
-            var wrapFucn = (Func<object, Task<object>>)(async (s) =>
+            var wrapFunc = (Func<object, Task<object>>)(async s =>
             {
-                a((T)s);
+                action.Invoke((T)s);
                 return null;
             });
 
@@ -116,7 +116,7 @@ namespace FlameVM.Core
             "{" +
            $"    exports.flameVM.{name} = data;" +
            $"    callback(null, null);" +
-            "}").Invoke(wrapFucn).Wait();
+            "}").Invoke(wrapFunc).Wait();
         }
 
         public static Func<object, Task<object>> Execute(string code) { return Edge.Func(HeaderNodeJS + code); }

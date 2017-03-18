@@ -14,7 +14,7 @@ namespace Flame.API.Core
 
         private static readonly Regex IncludeRex = new Regex(@"^#include <([A-Za-z]{1,}\.[a-z]{1,4})>;$");
         private static readonly Regex CommentRex = new Regex(@"^(\/\*.{1,}?\*\/).+$", RegexOptions.Singleline);
-        private static readonly Regex ByteSetRex = new Regex(@"^#byteset (0x[0-9A-Z]{1,}) >> (0x[0-9A-Z]{1,});$");
+        private static readonly Regex ByteSetRex = new Regex(@"^#byteset (0x[0-9A-F]{1,}) >> (0x[0-9A-F]{1,});$");
         private static readonly Regex HarmonyRex = new Regex(@"^#harmony (true|false|[0-1]{1});$");
         private static readonly Regex VarsRex    = new Regex(@"^<""([A-Za-z]{1,}"")>\(\""([A-Za-z]{1,})\""\);$");
 

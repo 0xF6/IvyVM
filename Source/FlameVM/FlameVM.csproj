@@ -84,7 +84,6 @@
     <Content Include="edge\edge.js" />
     <Content Include="edge\x64\node.dll" />
     <Content Include="edge\x86\node.dll" />
-    <Content Include="FlameVMEnv.js" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -97,6 +96,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Wraps\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Flame.API\Flame.API.csproj">
+      <Project>{8b33fa7e-8a79-404b-9700-92adc3da6915}</Project>
+      <Name>Flame.API</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

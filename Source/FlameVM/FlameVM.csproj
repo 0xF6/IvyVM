@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Core\EngineVM.cs" />
     <Compile Include="Core\Tools.cs" />
+    <Compile Include="Core\Wraps\VMCore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -94,9 +95,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\Wraps\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\lib\Flame.API\Flame.API.csproj">
       <Project>{8b33fa7e-8a79-404b-9700-92adc3da6915}</Project>

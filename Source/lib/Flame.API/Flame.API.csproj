@@ -33,12 +33,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RC.Core, Version=9.1.2.12250, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\FlameVM\packages\RC.Core.9.1.2.12250\lib\net45\RC.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\FlameVM\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RC.Core, Version=9.7.0.16500, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\FlameVM\packages\RC.Core.9.7.18850\lib\net45\RC.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,8 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\FlameXConfig.cs" />
-    <Compile Include="Core\libxFile.cs" />
+    <Compile Include="Core\LibFlame.cs" />
     <Compile Include="Core\WinScript.cs" />
+    <Compile Include="Exceptions\WrongMapLibException.cs" />
     <Compile Include="Processing\DeclarationAttribute.cs" />
     <Compile Include="Processing\DeclarationClassAttribute.cs" />
     <Compile Include="Processing\MethodDeclarationAttrbute.cs" />

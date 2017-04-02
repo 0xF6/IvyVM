@@ -1,10 +1,10 @@
-﻿using System.Text.RegularExpressions;
-using RC.Framework;
-
-namespace Flame.API.Core
+﻿namespace FlameAPI
 {
     using System;
     using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Linq;
+    using Rc.Framework.Screens;
 
     public class FlameXConfig
     {
@@ -16,7 +16,7 @@ namespace Flame.API.Core
         private static readonly Regex CommentRex = new Regex(@"^(\/\*.{1,}?\*\/).+$", RegexOptions.Singleline);
         private static readonly Regex ByteSetRex = new Regex(@"^#byteset (0x[0-9A-F]{1,}) >> (0x[0-9A-F]{1,});$");
         private static readonly Regex HarmonyRex = new Regex(@"^#harmony (true|false|[0-1]{1});$");
-        private static readonly Regex VarsRex    = new Regex(@"^<""([A-Za-z]{1,}"")>\(\""([A-Za-z]{1,})\""\);$");
+        private static readonly Regex VarsRex = new Regex(@"^<""([A-Za-z]{1,}"")>\(\""([A-Za-z]{1,})\""\);$");
 
         private FlameXConfig() { }
 
@@ -27,7 +27,6 @@ namespace Flame.API.Core
                 throw new Exception($"{key} is not defined.");
             return _dictionary[key];
         }
-
         private void set(string key, string value)
         {
             key = key.ToLower();
@@ -38,7 +37,7 @@ namespace Flame.API.Core
 
         public string this[string key]
         {
-            get         { return this.get(key); }
+            get { return this.get(key); }
             private set { this.set(key, value); }
         }
 
@@ -46,10 +45,12 @@ namespace Flame.API.Core
         {
             if (!_dictionary.ContainsKey(key)) return false;
             bool res = false;
-            if (Boolean.TryParse(_dictionary[key], out res))
-                return true;
-            return res;
+            return bool.TryParse(_dictionary[key], out res) || res;
         }
+
+        public bool IsIncluded(string lib) => includes.Contains(lib);
+        public string[] getIncludes() => includes.ToArray();
+        public string[] getKeys() => _dictionary.Keys.ToArray();
 
         public static FlameXConfig Parse(string siu)
         {
@@ -59,7 +60,7 @@ namespace Flame.API.Core
                 siu = siu.Replace(CommentRex.Match(siu).Groups[1].Value, "");
             foreach (var s in siu.Split('\n'))
             {
-                if(string.IsNullOrWhiteSpace(s))
+                if (string.IsNullOrWhiteSpace(s))
                     continue;
                 if (string.IsNullOrEmpty(s))
                     continue;
@@ -80,7 +81,7 @@ namespace Flame.API.Core
                     x[VarsRex.Match(s).Groups[1].Value] = VarsRex.Match(s).Groups[2].Value;
                     continue;
                 }
-                Terminal.WriteLine($"[{RCL.Wrap("FX-Config", ConsoleColor.DarkCyan)}][{RCL.Wrap("ERROR", ConsoleColor.Red)}]: Syntax ERROR, line: ['{s}']. Ignored!");
+                Screen.WriteLine($"[{RCL.Wrap("FX-Config", ConsoleColor.DarkCyan)}][{RCL.Wrap("ERROR", ConsoleColor.Red)}]: Syntax ERROR, line: ['{s}']. Ignored!");
             }
             return x;
         }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Flame.API.Core;
+using FlameAPI;
+using FlameAPI.Configuration;
+using FlameVM.Core.Wraps;
 #pragma warning disable 1998
 using System.Threading.Tasks;
 using EdgeJs;
@@ -18,13 +20,14 @@ namespace FlameVM.Core
         private static string HeaderNodeJS = @"
             let Log = exports.flameVM.Engine.Log;
             let Error = exports.flameVM.Engine.Error;
-            let Warning = exports.flameVM.Engine.Warning;";
+            let Warning = exports.flameVM.Engine.Warning;
+            let Info = exports.flameVM.Engine.Info;";
 
 
-        private libxFile compilePacket;
+        private LibFlame compilePacket;
         private string mainTS;
         private readonly Dictionary<string, object> contextDictionary = new Dictionary<string, object>();
-        private readonly Engine jsEngine;
+        internal readonly Engine jsEngine;
         public EngineVM(FlameXConfig config)
         {
             jsEngine = new Engine(cfg =>
@@ -44,6 +47,7 @@ namespace FlameVM.Core
                     Engine.Log = function (s) { exports.flameVM.VMLog(s); };
                     Engine.Error = function (s) { exports.flameVM.VMError(s); };
                     Engine.Warning = function (s) { exports.flameVM.VMWarning(s); };
+                    Engine.Info = function (s) { exports.flameVM.VMInfo(s); };
                     return Engine;
                 }());
                 Flame.Engine = Engine;
@@ -53,33 +57,13 @@ namespace FlameVM.Core
                 exports.flameVM = {};
                 exports.flameVM.methods = [];
                 exports.flameVM.Engine = Flame.Engine;
+                Flame.Engine.Info('[HAL] Engine initialization is complete.')
                 callback(null, null);
             }  
             ").Invoke(null).Wait();
 
 
-            BindContext<Action<string>>("VMLog", Log);
-            BindContext<Action<string>>("VMWarn", Waring);
-            BindContext<Action<string>>("VMError", Error);
-
-            BindContext<Func<string>>(nameof(VMGetVersion), VMGetVersion);
-
-
-            jsEngine.Execute(@"
-            var Flame;
-            (function (Flame) {
-                var Engine = (function () 
-                {
-                    function Engine() {}
-                    Engine.Log = function (s) { VMLog(s); };
-                    Engine.Error = function (s) { VMError(s); };
-                    Engine.Warning = function (s) { VMWarning(s); };
-                    return Engine;
-                }());
-                Flame.Engine = Engine;
-            })(Flame || (Flame = {}));");
-            jsEngine.Execute("var exports = {}; exports.__esModule = false;");
-            jsEngine.Execute("Flame.Engine.Log('[VM] Initialization is complete.');");
+            VMCore.Bind(this);
         }
 
         public void BindContext<T>(T t)
@@ -190,21 +174,6 @@ namespace FlameVM.Core
             //{
             //    e.Print();
             //}
-        }
-
-
-        public static string VMGetVersion() => "Node 7.1, V8 ES5, .NET 4.6.2, RC.Core 9.2, Flame.API 1.2, FlameVM 0.4";
-        public static void Log(string s)
-        {
-            Terminal.WriteLine($"[{RCL.Wrap("VM", ConsoleColor.DarkMagenta)}][{RCL.Wrap("LOG", ConsoleColor.DarkGray)}]: {s}");
-        }
-        public static void Error(string s)
-        {
-            Terminal.WriteLine($"[{RCL.Wrap("VM", ConsoleColor.DarkMagenta)}][{RCL.Wrap("ERR", ConsoleColor.DarkRed)}]: {s}");
-        }
-        public static void Waring(string s)
-        {
-            Terminal.WriteLine($"[{RCL.Wrap("VM", ConsoleColor.DarkMagenta)}][{RCL.Wrap("WAR", ConsoleColor.DarkYellow)}]: {s}");
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿using System.Drawing;
-
-namespace FlameAPI
+﻿namespace FlameAPI
 {
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using System.Linq;
     using Rc.Framework.Screens;
+    using System.Drawing;
 
     public class FlameXConfig
     {
@@ -26,20 +25,22 @@ namespace FlameAPI
 
         public string get(string key)
         {
+            key = key.ToLowerInvariant();
             lock (Guarder)
             {
-                if (!_dictionary.ContainsKey(key.ToLower()))
+                if (!_dictionary.ContainsKey(key))
                     throw new Exception($"{key} is not defined.");
-                return _dictionary[key.ToLower()];
+                return _dictionary[key];
             }
         }
         private void set(string key, string value)
         {
+            key = key.ToLowerInvariant();
             lock (Guarder)
             {
-                if (_dictionary.ContainsKey(key.ToLower()))
+                if (_dictionary.ContainsKey(key))
                     throw new Exception($"{key} is already defined.");
-                _dictionary.Add(key.ToLower(), value);
+                _dictionary.Add(key, value);
             }
         }
 
@@ -97,6 +98,14 @@ namespace FlameAPI
                 if(s.StartsWith("/*", StringComparison.Ordinal))
                     continue;
                 if (s.StartsWith("//", StringComparison.Ordinal))
+                    continue;
+                if (s.StartsWith(" ", StringComparison.Ordinal))
+                    continue;
+                if (s.StartsWith("*", StringComparison.Ordinal))
+                    continue;
+                if (s.StartsWith("\t", StringComparison.Ordinal))
+                    continue;
+                if (s.StartsWith("*/", StringComparison.Ordinal))
                     continue;
                 Screen.WriteLine($"[{RCL.Wrap("FX-Config", Color.DarkCyan)}][{RCL.Wrap("ERROR", Color.Red)}]: Syntax ERROR, line: ['{s}':{lineNum}]. Ignored!");
             }

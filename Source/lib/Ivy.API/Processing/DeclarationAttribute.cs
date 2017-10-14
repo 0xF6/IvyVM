@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Flame.API.Processing
+namespace Ivy.Library.Processing
 {
     public class DeclarationAttribute : Attribute
     {

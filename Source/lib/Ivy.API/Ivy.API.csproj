@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+	<TargetFramework>net47</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningsAsErrors>NU1605;</WarningsAsErrors>
+    <NoWarn>1701;1702;1705;NU1701</NoWarn>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  
+  
+  <ItemGroup>
+    <None Remove="BuildLog.txt" />
+    <None Remove="PostBuild.bat" />
+    <None Remove="tmp.txt" />
+    <None Remove="UpdateBuildLog.ps1" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="$(ProjectDir)\PostBuild.bat ValueA ManageBLD &quot;$(ProjectDir)&quot; &quot;$(TargetPath)&quot; $(ConfigurationName)" />
+  </Target>
+  <ItemGroup>
+    <PackageReference Include="NETStandard.Library" Version="2.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="NLog" Version="4.4.12" />
+    <PackageReference Include="RC.Core" Version="13.0.0" />
+  </ItemGroup>
+</Project>

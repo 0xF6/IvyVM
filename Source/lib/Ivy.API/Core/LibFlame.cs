@@ -1,4 +1,4 @@
-﻿namespace FlameAPI.Configuration
+﻿namespace Ivy.Library
 {
     using System;
     using System.Collections.Generic;

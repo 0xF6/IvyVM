@@ -1,4 +1,4 @@
-﻿namespace FlameAPI.Exceptions
+﻿namespace Ivy.Library.Exceptions
 {
     using System;
 

@@ -1,6 +1,6 @@
-# FlameVM
+# IvyVM
 
-FlameVM is app\framework for a any instruction which provides full __Javascript__,__CSharp__,__TypeScript__ run on __windows__ & __node__ platform.
+IvyVM is app\framework for a any instruction which provides full __Javascript__,__CSharp__,__TypeScript__ run on __windows__ & __node__ platform.
 
 # Features
 

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.10
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ivy.API", "Ivy.API.csproj", "{8B33FA7E-8A79-404B-9700-92ADC3DA6915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ivy.Library", "Ivy.Library.csproj", "{8B33FA7E-8A79-404B-9700-92ADC3DA6915}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E7754259-51AA-4BA7-8D41-33D3B526D564}
 	EndGlobalSection
 EndGlobal

@@ -6,6 +6,8 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>Ivy.Library</AssemblyName>
+    <RootNamespace>Ivy.Library</RootNamespace>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -21,10 +23,6 @@
     <None Remove="tmp.txt" />
     <None Remove="UpdateBuildLog.ps1" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="$(ProjectDir)\PostBuild.bat ValueA ManageBLD &quot;$(ProjectDir)&quot; &quot;$(TargetPath)&quot; $(ConfigurationName)" />
-  </Target>
   <ItemGroup>
     <PackageReference Include="NETStandard.Library" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />

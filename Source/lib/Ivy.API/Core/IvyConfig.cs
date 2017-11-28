@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Text.RegularExpressions;
     using System.Linq;
     using NLog;
@@ -77,8 +78,7 @@
             lock (Guarder)
             {
                 if (!_dictionary.ContainsKey(key)) return false;
-                bool res = false;
-                return bool.TryParse(_dictionary[key], out res) || res;
+                return bool.TryParse(_dictionary[key], out var res) || res;
             }
         }
         /// <summary>
@@ -87,17 +87,23 @@
         public bool IsIncluded(string lib) => includes.Contains(lib);
         public string[] getIncludes() => includes.ToArray();
         public string[] getKeys() => _dictionary.Keys.ToArray();
+
+        public static IvyConfig LoadFrom(string path)
+        {
+            return Parse(File.ReadAllText(path));
+        }
+
         /// <summary>
         /// Parse file
         /// </summary>
-        public static IvyConfig Parse(string url)
+        public static IvyConfig Parse(string content)
         {
-            url = url.Replace("\r", "");
+            content = content.Replace("\r", "");
             var x = new IvyConfig();
-            while (CommentRex.IsMatch(url))
-                url = url.Replace(CommentRex.Match(url).Groups[1].Value, "");
+            while (CommentRex.IsMatch(content))
+                content = content.Replace(CommentRex.Match(content).Groups[1].Value, "");
             var lineNum = 0;
-            foreach (var s in url.Split('\n'))
+            foreach (var s in content.Split('\n'))
             {
                 lineNum++;
                 if (string.IsNullOrWhiteSpace(s))
